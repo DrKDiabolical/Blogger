@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -41,5 +35,22 @@ public class Player : MonoBehaviour
 
         var clampPosition = new Vector2(Mathf.Clamp(transform.position.x, 0, 8), Mathf.Clamp(transform.position.y, 0, 15));
         transform.position = clampPosition;
+    }
+
+    // Handles collision with other objects
+    void OnCollisionEnter2D(Collision2D other) {
+        if (other.transform.tag == "Enemy") // If collision with enemy, destroy player
+        {
+            Destroy(gameObject);
+        }
+    }
+    
+    // Handles collision with other triggers
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.transform.tag == "WinArea") // If collision with WinArea, log that player won
+        {
+            // TODO: Add win scenario, remove test log
+            Debug.Log("You Win!");
+        }
     }
 }
