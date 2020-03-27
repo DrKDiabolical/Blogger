@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public bool canMove = true; // Defines if the player can move
+    public bool canBeDestroyed = true; // Defines if the player can be destroyed
+
     // Update is called once per frame
     void Update()
     {
-        HandleInput(); // Handles player input
+        if (canMove)
+        {
+            HandleInput(); // Handles player input
+        }
     }
 
     // Handles the input and movement of the player, including movement boundaries
@@ -39,18 +45,10 @@ public class Player : MonoBehaviour
 
     // Handles collision with other objects
     void OnCollisionEnter2D(Collision2D other) {
-        if (other.transform.tag == "Enemy") // If collision with enemy, destroy player
+        if (other.transform.tag == "Enemy" && canBeDestroyed) // If collision with enemy, destroy player
         {
             Destroy(gameObject);
-        }
-    }
-    
-    // Handles collision with other triggers
-    void OnTriggerEnter2D(Collider2D other) {
-        if (other.transform.tag == "WinArea") // If collision with WinArea, log that player won
-        {
-            // TODO: Add win scenario, remove test log
-            Debug.Log("You Win!");
+            FindObjectOfType<SceneMachine>().ReloadScene();
         }
     }
 }
